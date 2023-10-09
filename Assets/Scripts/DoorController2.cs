@@ -14,7 +14,7 @@ public class DoorController2 : MonoBehaviour
         if (other.CompareTag("MainCamera"))
         {
             intIcon.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.E))
             {
                 intIcon.SetActive(false);
                 doorAnim.SetBool("isOpening", true);
