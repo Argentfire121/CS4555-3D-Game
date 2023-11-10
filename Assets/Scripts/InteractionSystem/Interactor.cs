@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
+    //Used to create the foundation of the interactor system
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
