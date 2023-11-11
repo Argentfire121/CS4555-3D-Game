@@ -13,7 +13,6 @@ public class GhostSkeletonScript : MonoBehaviour
 
     public float health;
 
-
     //Patroling spots
     public Vector3 walkingPoint;
     bool walkingPointSet;
@@ -77,6 +76,7 @@ public class GhostSkeletonScript : MonoBehaviour
 
     private void SearchWalkPoint()
     {
+        //Creates a random walk point somewhere in the navmesh area
         float randomZ = Random.Range(-walkingPointRange, walkingPointRange);
         float randomX = Random.Range(-walkingPointRange, walkingPointRange);
 
@@ -128,6 +128,14 @@ public class GhostSkeletonScript : MonoBehaviour
     public void DestroyEnemy()
     {
         Destroy(gameObject);
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 
 
