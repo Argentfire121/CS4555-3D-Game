@@ -18,6 +18,10 @@ public class GhostSkeletonScript : MonoBehaviour
     bool walkingPointSet;
     public float walkingPointRange;
 
+    //Make patrol points
+    [SerializeField] private GameObject[] patrolPoint;
+    private int currentWaypointIndex = 0;
+
     //Attacking state
     public float attackRate;
     bool alreadyAttacked;
@@ -56,36 +60,21 @@ public class GhostSkeletonScript : MonoBehaviour
 
     private void Patroling()
     {
-        if (!walkingPointSet)
+        //Checks the current patrol point the hostile entity is on
+        if (Vector3.Distance(patrolPoint[currentWaypointIndex].transform.position, transform.position) < .1f)
         {
-            SearchWalkPoint();
+            //Changes the point once it reaches the current patrol point
+            currentWaypointIndex++;
+
+            //Resets index to 0 at the end of the array
+            if (currentWaypointIndex >= patrolPoint.Length)
+            {
+                currentWaypointIndex = 0;
+            }
         }
 
-        if (walkingPointSet)
-        {
-            agent.SetDestination(walkingPoint);
-        }
-
-        Vector3 distanceToWalkPoint = transform.position - walkingPoint;
-
-        if (distanceToWalkPoint.magnitude < 1f)
-        {
-            walkingPointSet = false;
-        }
-    }
-
-    private void SearchWalkPoint()
-    {
-        //Creates a random walk point somewhere in the navmesh area
-        float randomZ = Random.Range(-walkingPointRange, walkingPointRange);
-        float randomX = Random.Range(-walkingPointRange, walkingPointRange);
-
-        walkingPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-        if (Physics.Raycast(walkingPoint, -transform.up, 2f, whatIsGround))
-        {
-            walkingPointSet = true;
-        }
+        //Makes the hostile entity follow the patrol point
+        agent.SetDestination(patrolPoint[currentWaypointIndex].transform.position);
     }
 
     private void ChasePlayer()
