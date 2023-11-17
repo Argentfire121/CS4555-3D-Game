@@ -8,5 +8,6 @@ public interface Interactable
 
     public bool Interact(Interactor interactor);
 
+    IEnumerator Teleport();
 
 }

@@ -36,6 +36,9 @@ public class Interactor : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     _interactable.Interact(interactor: this);
+
+                    //bool test =
+                    //Debug.Log(test);
                 }
             }
         }

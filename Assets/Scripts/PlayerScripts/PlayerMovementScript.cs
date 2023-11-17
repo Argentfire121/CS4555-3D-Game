@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
@@ -15,8 +16,8 @@ public class PlayerMovementScript : MonoBehaviour
     public float sensitivity = 0.5f;
 
     //Player health
-    public int maxHealth = 10;
-    public int currentHealth;
+    public float maxHealth = 100;
+    public float currentHealth;
     public HealthBarScript healthBar;
     
     //Player ground checking
@@ -31,6 +32,10 @@ public class PlayerMovementScript : MonoBehaviour
     //Player teleport?
     public bool isDisabled = false;
 
+    //Time for player health drainage
+    [SerializeField] private float coef = 0.1f;
+    [SerializeField] private float healthPercentRestore = 0.1f;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,6 +47,13 @@ public class PlayerMovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //currentHealth -= coef * Time.deltaTime;
+        if (currentHealth > 0.0)
+        {
+            TakeDamage(coef * Time.deltaTime);
+        }
+        
+
         //Debug health lines
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -81,6 +93,7 @@ public class PlayerMovementScript : MonoBehaviour
         //Player movement
         controller.Move(move * speed * Time.deltaTime);
 
+
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -119,10 +132,32 @@ public class PlayerMovementScript : MonoBehaviour
         followTransform.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
     }
 
-    void TakeDamage(int dmg)
+    void TakeDamage(float dmg)
     {
         currentHealth -= dmg;
 
+        //healthBar.SetHealth((int) currentHealth);
         healthBar.SetHealth(currentHealth);
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        //Grabs a certain percentage of the maxHealth so it can be used
+        //to restore the player's health
+        float addedHealth = (maxHealth * healthPercentRestore);
+
+        if (collision.gameObject.CompareTag("NewRoomTrigger"))
+        {
+            currentHealth += addedHealth;
+
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+
+            healthBar.SetHealth(currentHealth);
+            
+            Destroy(collision.gameObject);
+        }
     }
 }

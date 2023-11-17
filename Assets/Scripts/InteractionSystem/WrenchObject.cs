@@ -11,7 +11,12 @@ public class WrenchObject : MonoBehaviour, Interactable
 
     public bool Interact(Interactor interactor)
     {
-        Debug.Log(message:"Wrenched interacted with");
+        Debug.Log(message: "Wrenched interacted with");
         return true;
+    }
+
+    public IEnumerator Teleport()
+    {
+        throw new System.NotImplementedException();
     }
 }
