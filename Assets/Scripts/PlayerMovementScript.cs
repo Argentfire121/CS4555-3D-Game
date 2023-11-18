@@ -60,7 +60,7 @@ public class PlayerMovementScript : MonoBehaviour
         transform.Rotate(0, cameraX, 0);
 
         //Rotates the character up and down with the mouse movement
-        followTransform.transform.rotation *= Quaternion.AngleAxis(cameraY * sensitivity, Vector3.right);
+        followTransform.transform.rotation *= Quaternion.AngleAxis((-1) * (cameraY * sensitivity), Vector3.right);
 
         var angles = followTransform.transform.localEulerAngles;
         
