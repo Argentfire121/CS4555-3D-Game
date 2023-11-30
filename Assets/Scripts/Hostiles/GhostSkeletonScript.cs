@@ -61,7 +61,7 @@ public class GhostSkeletonScript : MonoBehaviour
     private void Patroling()
     {
         //Checks the current patrol point the hostile entity is on
-        if (Vector3.Distance(patrolPoint[currentWaypointIndex].transform.position, transform.position) < .1f)
+        if (Vector3.Distance(patrolPoint[currentWaypointIndex].transform.position, transform.position) < .5f)
         {
             //Changes the point once it reaches the current patrol point
             currentWaypointIndex++;
